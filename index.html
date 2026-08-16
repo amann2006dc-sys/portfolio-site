@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aman — Interaction Designer</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="cursor"></div>
+  <div class="cursor-trail"></div>
+  <div class="noise-overlay"></div>
+  <canvas id="particles"></canvas>
+  <div class="scroll-progress"></div>
+
+  <nav>
+    <a href="#hero" class="nav-logo">Aman</a>
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="#work">Work</a></li>
+      <li><a href="#vision">Vision</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <p class="hero-sub">Hello, I'm</p>
+      <h1 class="hero-name" data-text="Aman">Aman</h1>
+      <p class="hero-tagline">Interaction Designer from Kerala, India</p>
+      <a href="#work" class="cta-btn magnetic" data-strength="0.3">View My Work</a>
+    </div>
+    <div class="scroll-indicator">
+      <span></span>
+    </div>
+  </section>
+
+  <div class="marquee">
+    <div class="marquee-track">
+      <span>UX Research</span><span>&bull;</span>
+      <span>UI Design</span><span>&bull;</span>
+      <span>Blender</span><span>&bull;</span>
+      <span>Illustrator</span><span>&bull;</span>
+      <span>Interaction Design</span><span>&bull;</span>
+      <span>UX Research</span><span>&bull;</span>
+      <span>UI Design</span><span>&bull;</span>
+      <span>Blender</span><span>&bull;</span>
+      <span>Illustrator</span><span>&bull;</span>
+      <span>Interaction Design</span><span>&bull;</span>
+    </div>
+  </div>
+
+  <section id="about">
+    <div class="section-inner">
+      <h2 class="section-title reveal">About Me</h2>
+      <div class="about-grid">
+        <div class="about-text reveal">
+          <p>I'm an interaction designer from Kerala, India. I studied at KMCT School of Design, where I developed a passion for crafting thoughtful, user-centered digital experiences.</p>
+          <p>I specialize in UX research, UI design, and 3D design with Blender. I'm also skilled in Adobe Illustrator, and I love bringing ideas to life through clean interfaces and immersive visuals.</p>
+        </div>
+        <div class="skills reveal">
+          <div class="skill-tag">UX Research</div>
+          <div class="skill-tag">UI Design</div>
+          <div class="skill-tag">Blender</div>
+          <div class="skill-tag">Illustrator</div>
+          <div class="skill-tag">Figma</div>
+          <div class="skill-tag">Interaction Design</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="stats">
+    <div class="section-inner">
+      <div class="stats-grid">
+        <div class="stat-item reveal">
+          <span class="stat-number" data-target="15">0</span>
+          <span class="stat-label">Projects Completed</span>
+        </div>
+        <div class="stat-item reveal">
+          <span class="stat-number" data-target="6">0</span>
+          <span class="stat-label">Months of Experience</span>
+        </div>
+        <div class="stat-item reveal">
+          <span class="stat-number" data-target="9">0</span>
+          <span class="stat-label">Tools Mastered</span>
+        </div>
+        <div class="stat-item reveal">
+          <span class="stat-number" data-target="100">0</span>
+          <span class="stat-label">Passion Level %</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="process">
+    <div class="section-inner">
+      <h2 class="section-title reveal">How I Work</h2>
+      <p class="section-subtitle reveal">Every project follows a human-centered process</p>
+      <div class="process-timeline">
+        <div class="process-line"></div>
+        <div class="process-step reveal">
+          <div class="process-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+            </svg>
+          </div>
+          <div class="process-content">
+            <span class="process-number">01</span>
+            <h3>Discover</h3>
+            <p>Understanding users through research, interviews, and data analysis to uncover real needs and pain points.</p>
+          </div>
+        </div>
+        <div class="process-step reveal">
+          <div class="process-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+          </div>
+          <div class="process-content">
+            <span class="process-number">02</span>
+            <h3>Define</h3>
+            <p>Synthesizing insights into clear problem statements, user personas, and actionable design briefs.</p>
+          </div>
+        </div>
+        <div class="process-step reveal">
+          <div class="process-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/>
+            </svg>
+          </div>
+          <div class="process-content">
+            <span class="process-number">03</span>
+            <h3>Design</h3>
+            <p>Iterating through wireframes, prototypes, and visual systems — exploring solutions until the right one emerges.</p>
+          </div>
+        </div>
+        <div class="process-step reveal">
+          <div class="process-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+          </div>
+          <div class="process-content">
+            <span class="process-number">04</span>
+            <h3>Deliver</h3>
+            <p>Polishing final designs with developers, ensuring every pixel and interaction matches the vision.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="manifesto reveal">
+    <div class="manifesto-inner">
+      <p class="manifesto-text" data-speed="0.8">Design is not just what it looks like.</p>
+      <p class="manifesto-text" data-speed="1.2">Design is how it <em>feels</em>.</p>
+    </div>
+  </div>
+
+  <section id="work">
+    <div class="section-inner">
+      <h2 class="section-title reveal">Selected Work</h2>
+      <div class="work-grid">
+        <a href="#" class="work-card work-card--large reveal" data-tilt>
+          <div class="work-card-shine"></div>
+          <div class="work-card-img" style="background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)"></div>
+          <div class="work-card-overlay">
+            <span class="work-card-number">01</span>
+            <div class="work-card-info">
+              <h3>Smart Arms</h3>
+              <p>Portfolio &mdash; Product design showcase</p>
+              <span class="work-card-arrow">&rarr;</span>
+            </div>
+          </div>
+        </a>
+        <a href="#" class="work-card reveal" data-tilt>
+          <div class="work-card-shine"></div>
+          <div class="work-card-img" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%)"></div>
+          <div class="work-card-overlay">
+            <span class="work-card-number">02</span>
+            <div class="work-card-info">
+              <h3>Nanoleaf Smart Ivy</h3>
+              <p>Poster &mdash; Brand identity design</p>
+              <span class="work-card-arrow">&rarr;</span>
+            </div>
+          </div>
+        </a>
+        <a href="#" class="work-card reveal" data-tilt>
+          <div class="work-card-shine"></div>
+          <div class="work-card-img" style="background: linear-gradient(135deg, #4a00e0 0%, #8e2de2 100%)"></div>
+          <div class="work-card-overlay">
+            <span class="work-card-number">03</span>
+            <div class="work-card-info">
+              <h3>Design Portfolio</h3>
+              <p>Case studies &mdash; UX research & UI work</p>
+              <span class="work-card-arrow">&rarr;</span>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="interaction-design">
+    <div class="section-inner">
+      <h2 class="section-title reveal">On Interaction Design</h2>
+      <div class="ixd-grid">
+        <div class="ixd-card reveal">
+          <div class="ixd-card-glow"></div>
+          <h3>Empathy First</h3>
+          <p>Every interaction starts with understanding who we're designing for. I immerse myself in the user's world — their frustrations, habits, and aspirations — before sketching a single screen.</p>
+        </div>
+        <div class="ixd-card reveal">
+          <div class="ixd-card-glow"></div>
+          <h3>Micro-Moments Matter</h3>
+          <p>The space between a tap and a response, the weight of a transition, the timing of feedback — these invisible moments define how a product feels. I obsess over the details that most people never consciously notice.</p>
+        </div>
+        <div class="ixd-card reveal">
+          <div class="ixd-card-glow"></div>
+          <h3>Bridge Art & Function</h3>
+          <p>Great interaction design lives at the intersection of beauty and usability. I believe aesthetics aren't decorative — they build trust, guide attention, and create emotional resonance.</p>
+        </div>
+        <div class="ixd-card reveal">
+          <div class="ixd-card-glow"></div>
+          <h3>Prototype to Prove</h3>
+          <p>I don't wait for perfection. I prototype early, test often, and let real user behavior shape the final design. The best ideas come from iteration, not speculation.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="vision">
+    <div class="section-inner">
+      <h2 class="section-title reveal">Where I'm Headed</h2>
+      <div class="vision-content">
+        <div class="vision-text reveal">
+          <p class="vision-large">I see myself growing into a design leader who shapes products that millions of people use daily.</p>
+          <div class="vision-details">
+            <div class="vision-item">
+              <span class="vision-year">2026</span>
+              <p>Building a strong foundation through freelance projects and internships, mastering the craft of interaction design.</p>
+            </div>
+            <div class="vision-item">
+              <span class="vision-year">2027</span>
+              <p>Joining a forward-thinking design studio or product company, contributing to real-world projects at scale.</p>
+            </div>
+            <div class="vision-item">
+              <span class="vision-year">2028+</span>
+              <p>Leading design systems, mentoring junior designers, and exploring the frontier of spatial and AI-driven interfaces.</p>
+            </div>
+          </div>
+        </div>
+        <div class="vision-graphic reveal">
+          <div class="vision-orbit">
+            <div class="vision-dot vision-dot--1"></div>
+            <div class="vision-dot vision-dot--2"></div>
+            <div class="vision-dot vision-dot--3"></div>
+            <div class="vision-ring vision-ring--1"></div>
+            <div class="vision-ring vision-ring--2"></div>
+            <div class="vision-ring vision-ring--3"></div>
+            <div class="vision-center">Aman</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="section-inner">
+      <h2 class="section-title reveal">Get In Touch</h2>
+      <p class="contact-text reveal">Have a project in mind? Let's build something great together.</p>
+      <a href="mailto:hello@aman.dev" class="contact-link reveal">hello@aman.dev</a>
+      <div class="social-links reveal">
+        <a href="#">GitHub</a>
+        <a href="#">Twitter</a>
+        <a href="#">LinkedIn</a>
+        <a href="#">Dribbble</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2026 Aman. All rights reserved.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
