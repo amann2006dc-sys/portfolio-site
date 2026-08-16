@@ -397,6 +397,7 @@ const lightbox = document.getElementById('lightbox');
 const lightboxContent = document.getElementById('lightbox-content');
 const lightboxClose = document.getElementById('lightbox-close');
 const lightboxLinks = document.querySelectorAll('[data-lightbox]');
+let lightboxProgressBar = null;
 
 lightboxLinks.forEach((link) => {
   link.addEventListener('click', (e) => {
@@ -405,22 +406,31 @@ lightboxLinks.forEach((link) => {
     const type = link.dataset.lightbox;
 
     lightboxContent.innerHTML = '';
+    lightboxContent.classList.remove('lightbox-scroll-mode');
 
-    if (type === 'image' || type === 'scroll-image') {
+    if (type === 'scroll-image') {
+      lightboxContent.classList.add('lightbox-scroll-mode');
       const img = document.createElement('img');
       img.src = href;
       img.alt = link.querySelector('h3')?.textContent || 'Project';
-      if (type === 'scroll-image') {
-        img.classList.add('lightbox-scroll');
-        const hint = document.createElement('div');
-        hint.className = 'lightbox-hint';
-        hint.textContent = 'Scroll to explore';
-        lightboxContent.appendChild(img);
-        lightboxContent.appendChild(hint);
-        setTimeout(() => hint.style.opacity = '0', 4000);
-      } else {
-        lightboxContent.appendChild(img);
-      }
+      img.classList.add('lightbox-scroll');
+      lightboxContent.appendChild(img);
+
+      lightboxProgressBar = document.createElement('div');
+      lightboxProgressBar.className = 'lightbox-progress';
+      lightbox.appendChild(lightboxProgressBar);
+
+      requestAnimationFrame(() => {
+        lightboxProgressBar.classList.add('visible');
+        updateScrollProgress();
+      });
+
+      lightboxContent.addEventListener('scroll', updateScrollProgress);
+    } else if (type === 'image') {
+      const img = document.createElement('img');
+      img.src = href;
+      img.alt = link.querySelector('h3')?.textContent || 'Project';
+      lightboxContent.appendChild(img);
     } else if (type === 'pdf') {
       const iframe = document.createElement('iframe');
       iframe.src = href;
@@ -432,9 +442,25 @@ lightboxLinks.forEach((link) => {
   });
 });
 
+function updateScrollProgress() {
+  if (!lightboxProgressBar || !lightboxContent.classList.contains('lightbox-scroll-mode')) return;
+  const scrollTop = lightboxContent.scrollTop;
+  const scrollHeight = lightboxContent.scrollHeight - lightboxContent.clientHeight;
+  const progress = scrollHeight > 0 ? scrollTop / scrollHeight : 0;
+  lightboxProgressBar.style.transform = `scaleX(${progress})`;
+}
+
 function closeLightbox() {
   lightbox.classList.remove('active');
   document.body.style.overflow = '';
+  lightboxContent.classList.remove('lightbox-scroll-mode');
+  lightboxContent.scrollTop = 0;
+  if (lightboxProgressBar) {
+    lightboxProgressBar.classList.remove('visible');
+    lightboxProgressBar.remove();
+    lightboxProgressBar = null;
+  }
+  lightboxContent.removeEventListener('scroll', updateScrollProgress);
   setTimeout(() => {
     lightboxContent.innerHTML = '';
   }, 400);

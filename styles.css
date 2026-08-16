@@ -1267,15 +1267,16 @@ footer {
 }
 
 .lightbox-close {
-  position: absolute;
+  position: fixed;
   top: 1.5rem;
   right: 2rem;
-  background: none;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
   border: none;
   color: var(--fg);
   font-size: 2.5rem;
   cursor: pointer;
-  z-index: 10001;
+  z-index: 10003;
   width: 50px;
   height: 50px;
   display: flex;
@@ -1299,6 +1300,21 @@ footer {
   transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
+.lightbox-content.lightbox-scroll-mode {
+  max-width: none;
+  max-height: none;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.lightbox-content.lightbox-scroll-mode::-webkit-scrollbar {
+  display: none;
+}
+
 .lightbox.active .lightbox-content {
   transform: scale(1) translateY(0);
 }
@@ -1312,15 +1328,47 @@ footer {
 }
 
 .lightbox-content img.lightbox-scroll {
-  max-height: none;
+  width: 100vw;
   height: auto;
-  max-width: min(600px, 90vw);
+  max-width: none;
+  max-height: none;
   object-fit: contain;
-  cursor: grab;
+  border-radius: 0;
+  box-shadow: none;
+  cursor: ns-resize;
 }
 
 .lightbox-content img.lightbox-scroll:active {
-  cursor: grabbing;
+  cursor: ns-resize;
+}
+
+.lightbox-light-stripe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, var(--cyan), var(--purple), var(--pink));
+  z-index: 10002;
+  transform-origin: left;
+  transition: transform 0.1s linear;
+}
+
+.lightbox-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, var(--cyan), var(--purple), var(--pink));
+  z-index: 10002;
+  transform-origin: left;
+  transform: scaleX(0);
+  transition: transform 0.1s linear;
+}
+
+.lightbox-progress.visible {
+  transform: scaleX(var(--scroll-progress, 0));
 }
 
 .lightbox-content iframe {
