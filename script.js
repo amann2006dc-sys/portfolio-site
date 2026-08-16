@@ -406,7 +406,9 @@ lightboxLinks.forEach((link) => {
     const type = link.dataset.lightbox;
 
     lightboxContent.innerHTML = '';
-    lightboxContent.classList.remove('lightbox-scroll-mode');
+  lightboxContent.classList.remove('lightbox-scroll-mode');
+  lightboxContent.classList.remove('lightbox-glow-mode');
+    lightboxContent.classList.remove('lightbox-glow-mode');
 
     if (type === 'scroll-image') {
       lightboxContent.classList.add('lightbox-scroll-mode');
@@ -432,6 +434,7 @@ lightboxLinks.forEach((link) => {
       img.alt = link.querySelector('h3')?.textContent || 'Project';
       lightboxContent.appendChild(img);
     } else if (type === 'glow-image') {
+      lightboxContent.classList.add('lightbox-glow-mode');
       const wrap = document.createElement('div');
       wrap.className = 'lightbox-glow-wrap';
 
