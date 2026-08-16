@@ -386,3 +386,52 @@ ixdCards.forEach((card) => {
     glow.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(${rgb}, 0.15) 0%, transparent 60%)`;
   });
 });
+
+const lightbox = document.getElementById('lightbox');
+const lightboxContent = document.getElementById('lightbox-content');
+const lightboxClose = document.getElementById('lightbox-close');
+const lightboxLinks = document.querySelectorAll('[data-lightbox]');
+
+lightboxLinks.forEach((link) => {
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+    const href = link.getAttribute('href');
+    const type = link.dataset.lightbox;
+
+    lightboxContent.innerHTML = '';
+
+    if (type === 'image') {
+      const img = document.createElement('img');
+      img.src = href;
+      img.alt = link.querySelector('h3')?.textContent || 'Project';
+      lightboxContent.appendChild(img);
+    } else if (type === 'pdf') {
+      const iframe = document.createElement('iframe');
+      iframe.src = href;
+      lightboxContent.appendChild(iframe);
+    }
+
+    lightbox.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  });
+});
+
+function closeLightbox() {
+  lightbox.classList.remove('active');
+  document.body.style.overflow = '';
+  setTimeout(() => {
+    lightboxContent.innerHTML = '';
+  }, 400);
+}
+
+lightboxClose.addEventListener('click', closeLightbox);
+
+lightbox.addEventListener('click', (e) => {
+  if (e.target === lightbox) closeLightbox();
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+    closeLightbox();
+  }
+});
