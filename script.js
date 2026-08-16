@@ -400,11 +400,21 @@ lightboxLinks.forEach((link) => {
 
     lightboxContent.innerHTML = '';
 
-    if (type === 'image') {
+    if (type === 'image' || type === 'scroll-image') {
       const img = document.createElement('img');
       img.src = href;
       img.alt = link.querySelector('h3')?.textContent || 'Project';
-      lightboxContent.appendChild(img);
+      if (type === 'scroll-image') {
+        img.classList.add('lightbox-scroll');
+        const hint = document.createElement('div');
+        hint.className = 'lightbox-hint';
+        hint.textContent = 'Scroll to explore';
+        lightboxContent.appendChild(img);
+        lightboxContent.appendChild(hint);
+        setTimeout(() => hint.style.opacity = '0', 4000);
+      } else {
+        lightboxContent.appendChild(img);
+      }
     } else if (type === 'pdf') {
       const iframe = document.createElement('iframe');
       iframe.src = href;

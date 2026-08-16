@@ -692,13 +692,17 @@ section {
 
 .work-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto auto;
+  grid-template-columns: 1.4fr 1fr;
   gap: 1.5rem;
+  align-items: stretch;
 }
 
 .work-card--large {
-  grid-column: 1 / -1;
+  grid-row: 1 / -1;
+}
+
+.work-card--tall {
+  min-height: 500px;
 }
 
 .work-card {
@@ -731,12 +735,10 @@ section {
 
 .work-card-img {
   width: 100%;
-  aspect-ratio: 16 / 10;
+  height: 100%;
+  position: absolute;
+  inset: 0;
   transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1), filter 0.8s ease;
-}
-
-.work-card--large .work-card-img {
-  aspect-ratio: 21 / 9;
 }
 
 .work-card:hover .work-card-img {
@@ -1223,7 +1225,8 @@ footer {
   .about-grid { grid-template-columns: 1fr; gap: 2rem; }
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
   .work-grid { grid-template-columns: 1fr; }
-  .work-card--large { grid-column: 1; }
+  .work-card--large { grid-row: auto; }
+  .work-card--tall { min-height: 350px; }
   .ixd-grid { grid-template-columns: 1fr; }
   .vision-content { grid-template-columns: 1fr; }
   .vision-graphic { display: none; }
@@ -1300,10 +1303,39 @@ footer {
   box-shadow: 0 30px 100px rgba(0, 0, 0, 0.5);
 }
 
+.lightbox-content img.lightbox-scroll {
+  max-height: none;
+  height: auto;
+  max-width: min(600px, 90vw);
+  object-fit: contain;
+  cursor: grab;
+}
+
+.lightbox-content img.lightbox-scroll:active {
+  cursor: grabbing;
+}
+
 .lightbox-content iframe {
   width: 80vw;
   height: 85vh;
   border: none;
   border-radius: var(--radius);
   box-shadow: 0 30px 100px rgba(0, 0, 0, 0.5);
+}
+
+.lightbox-hint {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  animation: hint-pulse 2s ease-in-out infinite;
+}
+
+@keyframes hint-pulse {
+  0%, 100% { opacity: 0.4; transform: translateX(-50%) translateY(0); }
+  50% { opacity: 0.8; transform: translateX(-50%) translateY(-5px); }
 }
