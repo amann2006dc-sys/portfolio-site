@@ -6,6 +6,8 @@ let mouseX = 0;
 let mouseY = 0;
 let trailX = 0;
 let trailY = 0;
+let scrollY = 0;
+let ticking = false;
 
 document.addEventListener('mousemove', (e) => {
   mouseX = e.clientX;
@@ -37,9 +39,22 @@ const observer = new IntersectionObserver(
       }
     });
   },
-  { threshold: 0.15 }
+  { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
 );
 reveals.forEach((el) => observer.observe(el));
+
+const bigTextLines = document.querySelectorAll('.big-text-line');
+const bigTextObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  },
+  { threshold: 0.3 }
+);
+bigTextLines.forEach((el) => bigTextObserver.observe(el));
 
 document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
   anchor.addEventListener('click', (e) => {
@@ -52,12 +67,101 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
 });
 
 const scrollProgress = document.querySelector('.scroll-progress');
-window.addEventListener('scroll', () => {
-  const scrollTop = window.scrollY;
+
+function onScroll() {
+  scrollY = window.scrollY;
+  if (!ticking) {
+    requestAnimationFrame(updateScroll);
+    ticking = true;
+  }
+}
+
+function updateScroll() {
+  ticking = false;
+
   const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-  const progress = (scrollTop / docHeight) * 100;
+  const progress = (scrollY / docHeight) * 100;
   scrollProgress.style.width = progress + '%';
-});
+
+  const vh = window.innerHeight;
+
+  const heroContent = document.querySelector('.hero-content');
+  if (heroContent) {
+    const heroOffset = scrollY * 0.4;
+    const heroOpacity = 1 - scrollY / (vh * 0.8);
+    const heroScale = 1 - scrollY / (vh * 3);
+    heroContent.style.transform = `translateY(${heroOffset}px) scale(${Math.max(heroScale, 0.5)})`;
+    heroContent.style.opacity = Math.max(heroOpacity, 0);
+  }
+
+  const blobs = document.querySelectorAll('.blob');
+  blobs.forEach((blob, i) => {
+    const speed = 0.05 + i * 0.03;
+    blob.style.transform = `translateY(${scrollY * speed}px)`;
+  });
+
+  const heroGlows = document.querySelectorAll('.hero-glow');
+  heroGlows.forEach((glow, i) => {
+    const speed = 0.15 + i * 0.05;
+    glow.style.transform = `translateY(${scrollY * speed}px)`;
+  });
+
+  const parallaxSections = document.querySelectorAll('[data-parallax-section]');
+  parallaxSections.forEach((section) => {
+    const rect = section.getBoundingClientRect();
+    const sectionCenter = rect.top + rect.height / 2;
+    const viewportCenter = vh / 2;
+    const offset = (sectionCenter - viewportCenter) * 0.05;
+
+    const inner = section.querySelector('.section-inner, .big-text-inner, .manifesto-inner, .marquee-track');
+    if (inner) {
+      inner.style.transform = `translateY(${offset}px)`;
+    }
+  });
+
+  const processLine = document.querySelector('.process-line');
+  if (processLine) {
+    const timeline = document.querySelector('.process-timeline');
+    if (timeline) {
+      const rect = timeline.getBoundingClientRect();
+      const progress = Math.min(Math.max((vh - rect.top) / (rect.height + vh), 0), 1);
+      processLine.style.background = `linear-gradient(180deg, 
+        var(--cyan) 0%, 
+        var(--purple) ${progress * 50}%, 
+        var(--pink) ${progress * 80}%, 
+        rgba(236, 72, 153, 0.1) 100%)`;
+    }
+  }
+
+  const visionRings = document.querySelectorAll('.vision-ring');
+  visionRings.forEach((ring) => {
+    const rect = ring.getBoundingClientRect();
+    if (rect.top < vh && rect.bottom > 0) {
+      const progress = (vh - rect.top) / (vh + rect.height);
+      const rotate = progress * 360;
+      ring.style.transform = `translate(-50%, -50%) rotate(${rotate}deg)`;
+    }
+  });
+
+  const manifesto = document.querySelector('.manifesto');
+  if (manifesto) {
+    const rect = manifesto.getBoundingClientRect();
+    if (rect.top < vh && rect.bottom > 0) {
+      const progress = (vh - rect.top) / (vh + rect.height);
+      const texts = manifesto.querySelectorAll('.manifesto-text');
+      texts.forEach((text, i) => {
+        const speed = parseFloat(text.dataset.speed) || 1;
+        const offset = (progress - 0.5) * 60 * speed;
+        text.style.transform = text.classList.contains('visible')
+          ? `translateY(${offset}px)`
+          : `translateY(40px)`;
+      });
+    }
+  }
+}
+
+window.addEventListener('scroll', onScroll, { passive: true });
+updateScroll();
 
 const canvas = document.getElementById('particles');
 const ctx = canvas.getContext('2d');
