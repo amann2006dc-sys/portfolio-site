@@ -30,6 +30,12 @@ hoverEls.forEach((el) => {
   el.addEventListener('mouseleave', () => trail.classList.remove('hover'));
 });
 
+const workCards = document.querySelectorAll('.work-card');
+workCards.forEach((card) => {
+  card.addEventListener('mouseenter', () => cursor.classList.add('work-hover'));
+  card.addEventListener('mouseleave', () => cursor.classList.remove('work-hover'));
+});
+
 const reveals = document.querySelectorAll('.reveal');
 const observer = new IntersectionObserver(
   (entries) => {

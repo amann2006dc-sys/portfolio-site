@@ -127,6 +127,14 @@ a, button { cursor: none; }
   height: 12px;
   background: var(--fg);
   mix-blend-mode: difference;
+  transition: background 0.3s, width 0.3s, height 0.3s, mix-blend-mode 0.3s;
+}
+
+.cursor.work-hover {
+  width: 18px;
+  height: 18px;
+  background: var(--cyan);
+  mix-blend-mode: normal;
 }
 
 .cursor-trail {
