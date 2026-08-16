@@ -1395,3 +1395,97 @@ footer {
   0%, 100% { opacity: 0.4; transform: translateX(-50%) translateY(0); }
   50% { opacity: 0.8; transform: translateX(-50%) translateY(-5px); }
 }
+
+.lightbox-glow-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  animation: glow-zoom-in 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+@keyframes glow-zoom-in {
+  0% { transform: scale(0.7); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.lightbox-glow-wrap img {
+  max-width: min(700px, 85vw);
+  max-height: 85vh;
+  object-fit: contain;
+  border-radius: 12px;
+  position: relative;
+  z-index: 2;
+}
+
+.lightbox-glow-ring {
+  position: absolute;
+  inset: -40px;
+  border-radius: 24px;
+  z-index: 1;
+  animation: glow-rotate 6s linear infinite, glow-pulse 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.lightbox-glow-ring::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 24px;
+  padding: 2px;
+  background: conic-gradient(from 0deg, var(--cyan), var(--purple), var(--pink), var(--cyan));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+.lightbox-glow-ring::after {
+  content: '';
+  position: absolute;
+  inset: -20px;
+  border-radius: 32px;
+  background: conic-gradient(from 180deg, var(--cyan), var(--purple), var(--pink), var(--cyan));
+  filter: blur(40px);
+  opacity: 0.25;
+  animation: glow-color-shift 4s ease-in-out infinite;
+}
+
+@keyframes glow-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes glow-color-shift {
+  0%, 100% { filter: blur(40px) hue-rotate(0deg); opacity: 0.25; }
+  50% { filter: blur(50px) hue-rotate(30deg); opacity: 0.4; }
+}
+
+.lightbox-glow-particles {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.lightbox-glow-particle {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  animation: particle-float linear infinite;
+}
+
+@keyframes particle-float {
+  0% { transform: translateY(100vh) scale(0); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(-20vh) scale(1); opacity: 0; }
+}

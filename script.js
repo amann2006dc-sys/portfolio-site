@@ -431,6 +431,37 @@ lightboxLinks.forEach((link) => {
       img.src = href;
       img.alt = link.querySelector('h3')?.textContent || 'Project';
       lightboxContent.appendChild(img);
+    } else if (type === 'glow-image') {
+      const wrap = document.createElement('div');
+      wrap.className = 'lightbox-glow-wrap';
+
+      const ring = document.createElement('div');
+      ring.className = 'lightbox-glow-ring';
+
+      const img = document.createElement('img');
+      img.src = href;
+      img.alt = link.querySelector('h3')?.textContent || 'Project';
+
+      const particles = document.createElement('div');
+      particles.className = 'lightbox-glow-particles';
+      const colors = ['#22d3ee', '#a855f7', '#ec4899', '#fb923c'];
+      for (let i = 0; i < 20; i++) {
+        const p = document.createElement('div');
+        p.className = 'lightbox-glow-particle';
+        p.style.left = Math.random() * 100 + '%';
+        p.style.animationDuration = (3 + Math.random() * 4) + 's';
+        p.style.animationDelay = Math.random() * 3 + 's';
+        p.style.background = colors[Math.floor(Math.random() * colors.length)];
+        p.style.width = (2 + Math.random() * 3) + 'px';
+        p.style.height = p.style.width;
+        p.style.boxShadow = `0 0 6px ${p.style.background}`;
+        particles.appendChild(p);
+      }
+
+      wrap.appendChild(ring);
+      wrap.appendChild(img);
+      wrap.appendChild(particles);
+      lightboxContent.appendChild(wrap);
     } else if (type === 'pdf') {
       const iframe = document.createElement('iframe');
       iframe.src = href;
