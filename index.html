@@ -13,6 +13,12 @@
   <canvas id="particles"></canvas>
   <div class="scroll-progress"></div>
 
+  <div class="floating-blobs">
+    <div class="blob blob--1"></div>
+    <div class="blob blob--2"></div>
+    <div class="blob blob--3"></div>
+  </div>
+
   <nav>
     <a href="#hero" class="nav-logo">Aman</a>
     <ul>
@@ -26,6 +32,9 @@
 
   <section id="hero">
     <div class="hero-bg"></div>
+    <div class="hero-glow hero-glow--1"></div>
+    <div class="hero-glow hero-glow--2"></div>
+    <div class="hero-glow hero-glow--3"></div>
     <div class="hero-content">
       <p class="hero-sub">Hello, I'm</p>
       <h1 class="hero-name" data-text="Aman">Aman</h1>
@@ -39,34 +48,34 @@
 
   <div class="marquee">
     <div class="marquee-track">
-      <span>UX Research</span><span>&bull;</span>
-      <span>UI Design</span><span>&bull;</span>
-      <span>Blender</span><span>&bull;</span>
-      <span>Illustrator</span><span>&bull;</span>
-      <span>Interaction Design</span><span>&bull;</span>
-      <span>UX Research</span><span>&bull;</span>
-      <span>UI Design</span><span>&bull;</span>
-      <span>Blender</span><span>&bull;</span>
-      <span>Illustrator</span><span>&bull;</span>
-      <span>Interaction Design</span><span>&bull;</span>
+      <span class="marquee-item marquee-item--1">UX Research</span><span>&bull;</span>
+      <span class="marquee-item marquee-item--2">UI Design</span><span>&bull;</span>
+      <span class="marquee-item marquee-item--3">Blender</span><span>&bull;</span>
+      <span class="marquee-item marquee-item--4">Illustrator</span><span>&bull;</span>
+      <span class="marquee-item marquee-item--5">Interaction Design</span><span>&bull;</span>
+      <span class="marquee-item marquee-item--1">UX Research</span><span>&bull;</span>
+      <span class="marquee-item marquee-item--2">UI Design</span><span>&bull;</span>
+      <span class="marquee-item marquee-item--3">Blender</span><span>&bull;</span>
+      <span class="marquee-item marquee-item--4">Illustrator</span><span>&bull;</span>
+      <span class="marquee-item marquee-item--5">Interaction Design</span><span>&bull;</span>
     </div>
   </div>
 
   <section id="about">
     <div class="section-inner">
-      <h2 class="section-title reveal">About Me</h2>
+      <h2 class="section-title gradient-title reveal">About Me</h2>
       <div class="about-grid">
         <div class="about-text reveal">
           <p>I'm an interaction designer from Kerala, India. I studied at KMCT School of Design, where I developed a passion for crafting thoughtful, user-centered digital experiences.</p>
           <p>I specialize in UX research, UI design, and 3D design with Blender. I'm also skilled in Adobe Illustrator, and I love bringing ideas to life through clean interfaces and immersive visuals.</p>
         </div>
         <div class="skills reveal">
-          <div class="skill-tag">UX Research</div>
-          <div class="skill-tag">UI Design</div>
-          <div class="skill-tag">Blender</div>
-          <div class="skill-tag">Illustrator</div>
-          <div class="skill-tag">Figma</div>
-          <div class="skill-tag">Interaction Design</div>
+          <div class="skill-tag" data-color="cyan">UX Research</div>
+          <div class="skill-tag" data-color="purple">UI Design</div>
+          <div class="skill-tag" data-color="pink">Blender</div>
+          <div class="skill-tag" data-color="orange">Illustrator</div>
+          <div class="skill-tag" data-color="green">Figma</div>
+          <div class="skill-tag" data-color="blue">Interaction Design</div>
         </div>
       </div>
     </div>
@@ -97,12 +106,12 @@
 
   <section id="process">
     <div class="section-inner">
-      <h2 class="section-title reveal">How I Work</h2>
+      <h2 class="section-title gradient-title reveal">How I Work</h2>
       <p class="section-subtitle reveal">Every project follows a human-centered process</p>
       <div class="process-timeline">
         <div class="process-line"></div>
         <div class="process-step reveal">
-          <div class="process-icon">
+          <div class="process-icon process-icon--1">
             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
               <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
             </svg>
@@ -114,7 +123,7 @@
           </div>
         </div>
         <div class="process-step reveal">
-          <div class="process-icon">
+          <div class="process-icon process-icon--2">
             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
               <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
             </svg>
@@ -126,7 +135,7 @@
           </div>
         </div>
         <div class="process-step reveal">
-          <div class="process-icon">
+          <div class="process-icon process-icon--3">
             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
               <path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/>
             </svg>
@@ -138,7 +147,7 @@
           </div>
         </div>
         <div class="process-step reveal">
-          <div class="process-icon">
+          <div class="process-icon process-icon--4">
             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
               <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
             </svg>
@@ -162,7 +171,7 @@
 
   <section id="work">
     <div class="section-inner">
-      <h2 class="section-title reveal">Selected Work</h2>
+      <h2 class="section-title gradient-title reveal">Selected Work</h2>
       <div class="work-grid">
         <a href="#" class="work-card work-card--large reveal" data-tilt>
           <div class="work-card-shine"></div>
@@ -206,25 +215,29 @@
 
   <section id="interaction-design">
     <div class="section-inner">
-      <h2 class="section-title reveal">On Interaction Design</h2>
+      <h2 class="section-title gradient-title reveal">On Interaction Design</h2>
       <div class="ixd-grid">
-        <div class="ixd-card reveal">
+        <div class="ixd-card reveal" data-glow-color="100, 108, 255">
           <div class="ixd-card-glow"></div>
+          <div class="ixd-card-icon">&#x2764;</div>
           <h3>Empathy First</h3>
           <p>Every interaction starts with understanding who we're designing for. I immerse myself in the user's world — their frustrations, habits, and aspirations — before sketching a single screen.</p>
         </div>
-        <div class="ixd-card reveal">
+        <div class="ixd-card reveal" data-glow-color="236, 72, 153">
           <div class="ixd-card-glow"></div>
+          <div class="ixd-card-icon">&#x2728;</div>
           <h3>Micro-Moments Matter</h3>
           <p>The space between a tap and a response, the weight of a transition, the timing of feedback — these invisible moments define how a product feels. I obsess over the details that most people never consciously notice.</p>
         </div>
-        <div class="ixd-card reveal">
+        <div class="ixd-card reveal" data-glow-color="34, 211, 238">
           <div class="ixd-card-glow"></div>
+          <div class="ixd-card-icon">&#x1F3A8;</div>
           <h3>Bridge Art & Function</h3>
           <p>Great interaction design lives at the intersection of beauty and usability. I believe aesthetics aren't decorative — they build trust, guide attention, and create emotional resonance.</p>
         </div>
-        <div class="ixd-card reveal">
+        <div class="ixd-card reveal" data-glow-color="251, 146, 60">
           <div class="ixd-card-glow"></div>
+          <div class="ixd-card-icon">&#x1F52C;</div>
           <h3>Prototype to Prove</h3>
           <p>I don't wait for perfection. I prototype early, test often, and let real user behavior shape the final design. The best ideas come from iteration, not speculation.</p>
         </div>
@@ -234,7 +247,7 @@
 
   <section id="vision">
     <div class="section-inner">
-      <h2 class="section-title reveal">Where I'm Headed</h2>
+      <h2 class="section-title gradient-title reveal">Where I'm Headed</h2>
       <div class="vision-content">
         <div class="vision-text reveal">
           <p class="vision-large">I see myself growing into a design leader who shapes products that millions of people use daily.</p>
@@ -270,19 +283,20 @@
 
   <section id="contact">
     <div class="section-inner">
-      <h2 class="section-title reveal">Get In Touch</h2>
+      <h2 class="section-title gradient-title reveal">Get In Touch</h2>
       <p class="contact-text reveal">Have a project in mind? Let's build something great together.</p>
       <a href="mailto:amann2006dc@gmail.com" class="contact-link reveal">amann2006dc@gmail.com</a>
       <div class="social-links reveal">
-        <a href="#">GitHub</a>
-        <a href="#">Twitter</a>
-        <a href="#">LinkedIn</a>
-        <a href="#">Dribbble</a>
+        <a href="#" class="social-pill" data-color="cyan">GitHub</a>
+        <a href="#" class="social-pill" data-color="purple">Twitter</a>
+        <a href="#" class="social-pill" data-color="pink">LinkedIn</a>
+        <a href="#" class="social-pill" data-color="orange">Dribbble</a>
       </div>
     </div>
   </section>
 
   <footer>
+    <div class="footer-gradient"></div>
     <p>&copy; 2026 Aman. All rights reserved.</p>
   </footer>
 

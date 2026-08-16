@@ -62,10 +62,18 @@ window.addEventListener('scroll', () => {
 const canvas = document.getElementById('particles');
 const ctx = canvas.getContext('2d');
 let particles = [];
-const PARTICLE_COUNT = 80;
+const PARTICLE_COUNT = 60;
 const CONNECTION_DISTANCE = 120;
 let canvasMouseX = window.innerWidth / 2;
 let canvasMouseY = window.innerHeight / 2;
+
+const particleColors = [
+  'rgba(34, 211, 238, 0.5)',
+  'rgba(168, 85, 247, 0.5)',
+  'rgba(236, 72, 153, 0.5)',
+  'rgba(251, 146, 60, 0.4)',
+  'rgba(232, 230, 227, 0.4)',
+];
 
 function resizeCanvas() {
   canvas.width = window.innerWidth;
@@ -85,7 +93,8 @@ class Particle {
     this.y = Math.random() * canvas.height;
     this.vx = (Math.random() - 0.5) * 0.5;
     this.vy = (Math.random() - 0.5) * 0.5;
-    this.radius = Math.random() * 1.5 + 0.5;
+    this.radius = Math.random() * 2 + 0.5;
+    this.color = particleColors[Math.floor(Math.random() * particleColors.length)];
   }
 
   update() {
@@ -110,7 +119,7 @@ class Particle {
   draw() {
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-    ctx.fillStyle = 'rgba(232, 230, 227, 0.4)';
+    ctx.fillStyle = this.color;
     ctx.fill();
   }
 }
@@ -131,12 +140,18 @@ function animateParticles() {
       const dy = particles[i].y - particles[j].y;
       const dist = Math.sqrt(dx * dx + dy * dy);
       if (dist < CONNECTION_DISTANCE) {
-        const alpha = (1 - dist / CONNECTION_DISTANCE) * 0.15;
+        const alpha = (1 - dist / CONNECTION_DISTANCE) * 0.12;
+        const gradient = ctx.createLinearGradient(
+          particles[i].x, particles[i].y,
+          particles[j].x, particles[j].y
+        );
+        gradient.addColorStop(0, particles[i].color.replace('0.5', String(alpha)));
+        gradient.addColorStop(1, particles[j].color.replace('0.5', String(alpha)));
         ctx.beginPath();
         ctx.moveTo(particles[i].x, particles[i].y);
         ctx.lineTo(particles[j].x, particles[j].y);
-        ctx.strokeStyle = `rgba(232, 230, 227, ${alpha})`;
-        ctx.lineWidth = 0.5;
+        ctx.strokeStyle = gradient;
+        ctx.lineWidth = 0.8;
         ctx.stroke();
       }
     }
@@ -258,11 +273,12 @@ manifestoTexts.forEach((el) => manifestoObserver.observe(el));
 const ixdCards = document.querySelectorAll('.ixd-card');
 ixdCards.forEach((card) => {
   const glow = card.querySelector('.ixd-card-glow');
+  const rgb = card.dataset.glowColor || '100, 108, 255';
 
   card.addEventListener('mousemove', (e) => {
     const rect = card.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-    glow.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(100, 108, 255, 0.12) 0%, transparent 60%)`;
+    glow.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(${rgb}, 0.15) 0%, transparent 60%)`;
   });
 });
