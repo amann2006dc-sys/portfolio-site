@@ -173,16 +173,6 @@ function updateScroll() {
     }
   });
 
-  document.querySelectorAll('.reveal').forEach((el) => {
-    const rect = el.getBoundingClientRect();
-    if (rect.top < vh * 0.9 && rect.bottom > 0) {
-      const progress = Math.max(0, Math.min(1, (vh - rect.top) / (vh * 0.5)));
-      const blur = (1 - progress) * 4;
-      const sat = 50 + progress * 50;
-      el.style.filter = `blur(${blur}px) saturate(${sat}%)`;
-    }
-  });
-
   document.querySelectorAll('.work-card').forEach((card) => {
     const rect = card.getBoundingClientRect();
     if (rect.top < vh && rect.bottom > 0) {
