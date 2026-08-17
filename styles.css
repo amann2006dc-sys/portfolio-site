@@ -501,6 +501,8 @@ section.fade-section.in-view {
 
 .scroll-explode {
   position: relative;
+  opacity: 1 !important;
+  transform: none !important;
 }
 
 .scroll-explode .char {
