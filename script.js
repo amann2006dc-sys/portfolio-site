@@ -303,29 +303,31 @@ animateParticles();
 
 const heroName = document.querySelector('.hero-name');
 const originalText = heroName.getAttribute('data-text');
-const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&';
-let scrambleInterval = null;
+const charWrap = heroName.querySelector('.char-wrap');
 
-function scrambleText() {
-  let iteration = 0;
-  clearInterval(scrambleInterval);
-  scrambleInterval = setInterval(() => {
-    heroName.textContent = originalText
-      .split('')
-      .map((char, i) => {
-        if (i < iteration) return originalText[i];
-        return chars[Math.floor(Math.random() * chars.length)];
-      })
-      .join('');
-    if (iteration >= originalText.length) {
-      clearInterval(scrambleInterval);
-      heroName.textContent = originalText;
-    }
-    iteration += 1 / 3;
-  }, 30);
+if (charWrap) {
+  charWrap.style.display = 'none';
 }
 
-setTimeout(scrambleText, 600);
+function splitText(el, baseDelay) {
+  const text = el.textContent;
+  el.textContent = '';
+  el.style.opacity = '1';
+  text.split('').forEach((char, i) => {
+    const span = document.createElement('span');
+    span.className = char === ' ' ? 'char space' : 'char';
+    span.textContent = char;
+    span.style.animationDelay = (baseDelay + i * 0.04) + 's';
+    el.appendChild(span);
+  });
+}
+
+splitText(heroName, 0.3);
+
+document.querySelectorAll('.char-split').forEach((el) => {
+  const delay = parseFloat(el.dataset.delay) || 0;
+  splitText(el, delay);
+});
 
 const tiltCards = document.querySelectorAll('[data-tilt]');
 tiltCards.forEach((card) => {

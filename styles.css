@@ -265,8 +265,19 @@ nav a:hover { color: var(--fg); }
   color: var(--cyan);
   text-transform: uppercase;
   letter-spacing: 0.3em;
+}
+
+.hero-sub .char,
+.hero-tagline .char {
+  display: inline-block;
   opacity: 0;
-  animation: fadeUp 0.8s 0.2s forwards;
+  transform: translateY(15px) rotateZ(-3deg);
+  animation: char-split-fade 0.5s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+@keyframes char-split-fade {
+  0% { opacity: 0; transform: translateY(15px) rotateZ(-3deg); filter: blur(2px); }
+  100% { opacity: 1; transform: translateY(0) rotateZ(0deg); filter: blur(0); }
 }
 
 .hero-name {
@@ -275,16 +286,46 @@ nav a:hover { color: var(--fg); }
   letter-spacing: -0.04em;
   line-height: 1;
   margin: 0.5rem 0;
-  opacity: 0;
-  animation: fadeUp 0.8s 0.4s forwards;
   position: relative;
   display: inline-block;
+  perspective: 600px;
+}
+
+.hero-name .char {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(80px) rotateX(-60deg) scale(0.6) rotateZ(-8deg);
+  animation: char-reveal 0.9s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+  transform-origin: bottom center;
   background: linear-gradient(135deg, var(--fg) 0%, var(--cyan) 50%, var(--purple) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   background-size: 200% 200%;
-  animation: fadeUp 0.8s 0.4s forwards, gradient-shift 6s ease-in-out infinite;
+}
+
+.hero-name .char.space {
+  width: 0.3em;
+}
+
+@keyframes char-reveal {
+  0% {
+    opacity: 0;
+    transform: translateY(80px) rotateX(-60deg) scale(0.6) rotateZ(-8deg);
+    filter: blur(6px);
+  }
+  50% {
+    opacity: 1;
+    filter: blur(0);
+  }
+  75% {
+    transform: translateY(-8px) rotateX(5deg) scale(1.05) rotateZ(1deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotateX(0deg) scale(1) rotateZ(0deg);
+    filter: blur(0);
+  }
 }
 
 @keyframes gradient-shift {
@@ -296,8 +337,6 @@ nav a:hover { color: var(--fg); }
   font-size: 1.25rem;
   color: var(--muted);
   margin-bottom: 2rem;
-  opacity: 0;
-  animation: fadeUp 0.8s 0.6s forwards;
 }
 
 .cta-btn {
