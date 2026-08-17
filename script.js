@@ -276,8 +276,8 @@ function updateExplosions() {
   charData.forEach(({ title, chars, debris }) => {
     const rect = title.getBoundingClientRect();
     const titleTop = rect.top;
-    const start = vh2 * 0.6;
-    const end = -rect.height;
+    const start = vh2 * 0.15;
+    const end = -rect.height * 0.5;
     let progress = 0;
 
     if (titleTop < start && titleTop > end) {
