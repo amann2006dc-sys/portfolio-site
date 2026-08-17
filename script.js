@@ -164,6 +164,36 @@ function updateScroll() {
       });
     }
   }
+
+  document.querySelectorAll('section').forEach((section) => {
+    const rect = section.getBoundingClientRect();
+    const inView = rect.top < vh * 0.85 && rect.bottom > 0;
+    if (inView) {
+      section.classList.add('in-view');
+    }
+  });
+
+  document.querySelectorAll('.reveal').forEach((el) => {
+    const rect = el.getBoundingClientRect();
+    if (rect.top < vh * 0.9 && rect.bottom > 0) {
+      const progress = Math.max(0, Math.min(1, (vh - rect.top) / (vh * 0.5)));
+      const blur = (1 - progress) * 4;
+      const sat = 50 + progress * 50;
+      el.style.filter = `blur(${blur}px) saturate(${sat}%)`;
+    }
+  });
+
+  document.querySelectorAll('.work-card').forEach((card) => {
+    const rect = card.getBoundingClientRect();
+    if (rect.top < vh && rect.bottom > 0) {
+      const progress = (vh - rect.top) / (vh + rect.height);
+      const rotate = (progress - 0.5) * 2;
+      const existingTransform = card.style.transform || '';
+      if (!existingTransform.includes('perspective')) {
+        card.style.transform += ` rotateX(${rotate}deg)`;
+      }
+    }
+  });
 }
 
 window.addEventListener('scroll', onScroll, { passive: true });
@@ -465,6 +495,68 @@ lightboxLinks.forEach((link) => {
       wrap.appendChild(img);
       wrap.appendChild(particles);
       lightboxContent.appendChild(wrap);
+
+      const lens = document.createElement('div');
+      lens.className = 'lightbox-zoom-lens';
+      wrap.appendChild(lens);
+
+      let isHolding = false;
+      let holdTimer = null;
+
+      img.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        isHolding = true;
+        holdTimer = setTimeout(() => {
+          if (!isHolding) return;
+          const rect = img.getBoundingClientRect();
+          const x = ((e.clientX - rect.left) / rect.width) * 100;
+          const y = ((e.clientY - rect.top) / rect.height) * 100;
+          img.style.setProperty('--zoom-x', x + '%');
+          img.style.setProperty('--zoom-y', y + '%');
+          lens.style.left = e.clientX - wrap.getBoundingClientRect().left + 'px';
+          lens.style.top = e.clientY - wrap.getBoundingClientRect().top + 'px';
+          lens.classList.add('active');
+          img.classList.add('zoomed');
+        }, 150);
+      });
+
+      img.addEventListener('mousemove', (e) => {
+        if (img.classList.contains('zoomed')) {
+          const rect = img.getBoundingClientRect();
+          const x = ((e.clientX - rect.left) / rect.width) * 100;
+          const y = ((e.clientY - rect.top) / rect.height) * 100;
+          img.style.setProperty('--zoom-x', x + '%');
+          img.style.setProperty('--zoom-y', y + '%');
+          const wrapRect = wrap.getBoundingClientRect();
+          lens.style.left = e.clientX - wrapRect.left + 'px';
+          lens.style.top = e.clientY - wrapRect.top + 'px';
+        }
+      });
+
+      const releaseZoom = () => {
+        isHolding = false;
+        clearTimeout(holdTimer);
+        img.classList.remove('zoomed');
+        lens.classList.remove('active');
+      };
+
+      img.addEventListener('mouseup', releaseZoom);
+      img.addEventListener('mouseleave', releaseZoom);
+
+      wrap.addEventListener('touchstart', (e) => {
+        const touch = e.touches[0];
+        const rect = img.getBoundingClientRect();
+        const x = ((touch.clientX - rect.left) / rect.width) * 100;
+        const y = ((touch.clientY - rect.top) / rect.height) * 100;
+        img.style.setProperty('--zoom-x', x + '%');
+        img.style.setProperty('--zoom-y', y + '%');
+        lens.style.left = touch.clientX - wrap.getBoundingClientRect().left + 'px';
+        lens.style.top = touch.clientY - wrap.getBoundingClientRect().top + 'px';
+        lens.classList.add('active');
+        img.classList.add('zoomed');
+      }, { passive: true });
+
+      img.addEventListener('touchend', releaseZoom);
     } else if (type === 'pdf') {
       const iframe = document.createElement('iframe');
       iframe.src = href;
