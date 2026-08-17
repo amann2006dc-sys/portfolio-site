@@ -21,7 +21,7 @@ if (sessionStorage.getItem('intro-played') || !introOverlay) {
   introOverlay.addEventListener('click', skipIntro);
 
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const exitDelay = prefersReduced ? 2200 : 2800;
+  const exitDelay = prefersReduced ? 3500 : 4500;
   setTimeout(skipIntro, exitDelay);
 }
 
