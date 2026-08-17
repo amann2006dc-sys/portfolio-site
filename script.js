@@ -1,3 +1,30 @@
+const introOverlay = document.getElementById('intro-overlay');
+let introSkipped = false;
+
+if (sessionStorage.getItem('intro-played') || !introOverlay) {
+  if (introOverlay) introOverlay.remove();
+} else {
+  document.body.style.overflow = 'hidden';
+
+  function skipIntro() {
+    if (introSkipped) return;
+    introSkipped = true;
+    introOverlay.classList.add('intro-exiting');
+    introOverlay.removeEventListener('click', skipIntro);
+    setTimeout(() => {
+      introOverlay.remove();
+      document.body.style.overflow = '';
+      sessionStorage.setItem('intro-played', '1');
+    }, 900);
+  }
+
+  introOverlay.addEventListener('click', skipIntro);
+
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const exitDelay = prefersReduced ? 2200 : 2800;
+  setTimeout(skipIntro, exitDelay);
+}
+
 const cursor = document.querySelector('.cursor');
 const trail = document.querySelector('.cursor-trail');
 const hoverEls = document.querySelectorAll('a, button, .work-card, .skill-tag');

@@ -20,6 +20,184 @@
   --blue: #3b82f6;
 }
 
+/* ─── Intro Overlay ─── */
+.intro-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  opacity: 0;
+  animation: intro-fade-in 0.4s 0.1s forwards;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.intro-overlay.intro-exiting {
+  animation: intro-exit 0.6s 0.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  pointer-events: none;
+}
+
+.intro-orb {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, var(--cyan), var(--purple), var(--pink), var(--cyan));
+  filter: blur(40px);
+  opacity: 0;
+  animation: intro-orb-in 1s 0.3s cubic-bezier(0.23, 1, 0.32, 1) forwards,
+             intro-orb-spin 4s 0.3s linear infinite;
+}
+
+.intro-overlay.intro-exiting .intro-orb {
+  animation: intro-orb-expand 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.intro-name {
+  font-size: clamp(4rem, 12vw, 9rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  position: relative;
+  z-index: 2;
+  background: linear-gradient(135deg, var(--fg) 0%, var(--cyan) 50%, var(--purple) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.intro-char {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(40px) scale(0.8);
+  animation: intro-char-in 0.5s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+.intro-char:nth-child(1) { animation-delay: 0.6s; }
+.intro-char:nth-child(2) { animation-delay: 0.75s; }
+.intro-char:nth-child(3) { animation-delay: 0.9s; }
+.intro-char:nth-child(4) { animation-delay: 1.05s; }
+
+.intro-tagline {
+  font-size: 1rem;
+  color: var(--muted);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0;
+  transform: translateY(15px);
+  animation: intro-tagline-in 0.6s 1.3s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+  position: relative;
+  z-index: 2;
+}
+
+.intro-skip {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(255, 255, 255, 0.25);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  opacity: 0;
+  animation: intro-skip-in 0.5s 1.8s forwards;
+  transition: color 0.3s;
+}
+
+.intro-overlay.intro-exiting .intro-skip {
+  opacity: 0 !important;
+  animation: none;
+}
+
+@keyframes intro-fade-in {
+  to { opacity: 1; }
+}
+
+@keyframes intro-orb-in {
+  0% { opacity: 0; transform: scale(0.3); }
+  100% { opacity: 0.7; transform: scale(1); }
+}
+
+@keyframes intro-orb-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes intro-char-in {
+  0% { opacity: 0; transform: translateY(40px) scale(0.8); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes intro-tagline-in {
+  0% { opacity: 0; transform: translateY(15px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes intro-skip-in {
+  to { opacity: 1; }
+}
+
+@keyframes intro-exit {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0px);
+  }
+  60% {
+    opacity: 0.6;
+    transform: scale(1.05);
+    filter: blur(4px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.15);
+    filter: blur(12px);
+    pointer-events: none;
+  }
+}
+
+@keyframes intro-orb-expand {
+  0% { filter: blur(40px); opacity: 0.7; transform: scale(1); }
+  100% { filter: blur(120px); opacity: 0.4; transform: scale(4); }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .intro-overlay {
+    animation: intro-fade-in 0.3s 0.05s forwards;
+  }
+  .intro-orb {
+    animation: intro-fade-in 0.4s 0.15s forwards !important;
+    filter: blur(50px);
+    opacity: 0.4;
+    width: 200px;
+    height: 200px;
+  }
+  .intro-char {
+    animation: intro-fade-in 0.4s 0.2s forwards !important;
+  }
+  .intro-tagline {
+    animation: intro-fade-in 0.4s 0.3s forwards !important;
+  }
+  .intro-skip {
+    animation: intro-skip-in 0.3s 0.5s forwards;
+  }
+  .intro-overlay.intro-exiting {
+    animation: intro-fade-in 0.4s forwards !important;
+    animation-direction: reverse !important;
+  }
+}
+
+/* Hide intro on mobile for perf */
+@media (max-width: 480px) {
+  .intro-orb { width: 80px; height: 80px; }
+  .intro-skip { bottom: 1.5rem; font-size: 0.6rem; }
+}
+
 html {
   scroll-behavior: smooth;
   cursor: none;
