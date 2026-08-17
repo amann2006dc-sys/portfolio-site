@@ -499,6 +499,45 @@ section.fade-section.in-view {
   to { transform: rotate(-360deg); }
 }
 
+.scroll-explode {
+  position: relative;
+}
+
+.scroll-explode .char {
+  display: inline-block;
+  transition: none;
+  will-change: transform, opacity, filter;
+}
+
+.scroll-explode .debris {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  pointer-events: none;
+  will-change: transform, opacity;
+  opacity: 0;
+}
+
+.scroll-explode .debris--square {
+  border-radius: 2px;
+}
+
+.scroll-explode .debris--triangle {
+  width: 0;
+  height: 0;
+  background: none !important;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-bottom: 7px solid currentColor;
+}
+
+.scroll-explode .debris--line {
+  width: 12px;
+  height: 2px;
+  border-radius: 1px;
+}
+
 .section-inner {
   max-width: 1000px;
   margin: 0 auto;

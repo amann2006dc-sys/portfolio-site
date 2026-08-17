@@ -186,6 +186,112 @@ function updateScroll() {
   });
 }
 
+const explosionTitles = document.querySelectorAll('.section-title, .big-text-line');
+const debrisColors = ['#22d3ee', '#a855f7', '#ec4899', '#fb923c', '#38ef7d', '#e8e6e3'];
+const debrisShapes = ['debris--square', 'debris--triangle', 'debris--line'];
+const charData = [];
+
+explosionTitles.forEach((title) => {
+  title.classList.add('scroll-explode');
+  const text = title.textContent;
+  title.textContent = '';
+
+  const titleChars = [];
+  text.split('').forEach((char) => {
+    const span = document.createElement('span');
+    span.className = char === ' ' ? 'char space' : 'char';
+    span.textContent = char;
+    title.appendChild(span);
+    titleChars.push({
+      el: span,
+      x: (Math.random() - 0.5) * 300,
+      y: (Math.random() - 0.5) * 200 - 100,
+      r: (Math.random() - 0.5) * 720,
+      blur: 8 + Math.random() * 8,
+    });
+  });
+
+  const debrisContainer = document.createElement('div');
+  debrisContainer.style.cssText = 'position:absolute;inset:0;pointer-events:none;overflow:visible;';
+  title.style.position = 'relative';
+  title.appendChild(debrisContainer);
+
+  const debrisItems = [];
+  for (let i = 0; i < 12; i++) {
+    const d = document.createElement('div');
+    const shape = debrisShapes[Math.floor(Math.random() * debrisShapes.length)];
+    d.className = 'debris ' + shape;
+    const color = debrisColors[Math.floor(Math.random() * debrisColors.length)];
+    d.style.color = color;
+    if (!shape.includes('triangle')) {
+      d.style.background = color;
+    }
+    d.style.width = (4 + Math.random() * 8) + 'px';
+    d.style.height = (4 + Math.random() * 8) + 'px';
+    debrisContainer.appendChild(d);
+    debrisItems.push({
+      el: d,
+      x: (Math.random() - 0.5) * 400,
+      y: (Math.random() - 0.5) * 300 - 150,
+      r: (Math.random() - 0.5) * 1080,
+      scale: 0.5 + Math.random() * 1.5,
+    });
+  }
+
+  charData.push({ title, chars: titleChars, debris: debrisItems });
+});
+
+function updateExplosions() {
+  const vh2 = window.innerHeight;
+
+  charData.forEach(({ title, chars, debris }) => {
+    const rect = title.getBoundingClientRect();
+    const titleTop = rect.top;
+    const start = vh2 * 0.6;
+    const end = -rect.height;
+    let progress = 0;
+
+    if (titleTop < start && titleTop > end) {
+      progress = 1 - (titleTop - end) / (start - end);
+      progress = Math.max(0, Math.min(1, progress));
+    } else if (titleTop <= end) {
+      progress = 1;
+    }
+
+    const ease = progress < 0.5
+      ? 4 * progress * progress * progress
+      : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+
+    chars.forEach((c) => {
+      const tx = c.x * ease;
+      const ty = c.y * ease;
+      const rotate = c.r * ease;
+      const blur = c.blur * ease;
+      const opacity = 1 - ease;
+      const scale = 1 - ease * 0.4;
+      c.el.style.transform = `translate(${tx}px, ${ty}px) rotate(${rotate}deg) scale(${scale})`;
+      c.el.style.opacity = opacity;
+      c.el.style.filter = `blur(${blur}px)`;
+    });
+
+    debris.forEach((d) => {
+      if (ease > 0.05) {
+        const tx = d.x * ease;
+        const ty = d.y * ease;
+        const rotate = d.r * ease;
+        const opacity = ease < 0.1 ? ease * 10 : ease > 0.8 ? (1 - ease) * 5 : 1;
+        d.el.style.transform = `translate(${tx}px, ${ty}px) rotate(${rotate}deg) scale(${d.scale * ease})`;
+        d.el.style.opacity = opacity;
+      } else {
+        d.el.style.opacity = 0;
+      }
+    });
+  });
+}
+
+window.addEventListener('scroll', updateExplosions, { passive: true });
+updateExplosions();
+
 window.addEventListener('scroll', onScroll, { passive: true });
 updateScroll();
 
