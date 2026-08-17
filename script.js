@@ -238,6 +238,32 @@ function animateParticles() {
 }
 animateParticles();
 
+const manifestoTexts = document.querySelectorAll('.manifesto-text');
+const manifestoObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  },
+  { threshold: 0.3 }
+);
+manifestoTexts.forEach((el) => manifestoObserver.observe(el));
+
+const bigTextLines = document.querySelectorAll('.big-text-line');
+const bigTextObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  },
+  { threshold: 0.3 }
+);
+bigTextLines.forEach((el) => bigTextObserver.observe(el));
+
 const tiltCards = document.querySelectorAll('[data-tilt]');
 tiltCards.forEach((card) => {
   const shine = card.querySelector('.work-card-shine');

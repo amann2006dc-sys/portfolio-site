@@ -1159,8 +1159,14 @@ footer {
   letter-spacing: -0.04em;
   line-height: 1.1;
   opacity: 0;
+  transform: translateY(40px);
   transition: opacity 1s ease, transform 1.2s cubic-bezier(0.23, 1, 0.32, 1);
   will-change: transform, opacity;
+}
+
+.big-text-line.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .big-text-line em {
