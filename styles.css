@@ -1302,18 +1302,6 @@ footer {
   will-change: transform, opacity;
 }
 
-.big-text-line[data-scroll-slide="left"] {
-  transform: translateX(-120px);
-}
-.big-text-line[data-scroll-slide="right"] {
-  transform: translateX(120px);
-}
-
-.big-text-line.visible {
-  opacity: 1;
-  transform: translateX(0) !important;
-}
-
 .big-text-line em {
   font-style: italic;
   background: linear-gradient(135deg, var(--cyan), var(--purple), var(--pink));

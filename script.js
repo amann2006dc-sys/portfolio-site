@@ -193,22 +193,51 @@ const charData = [];
 
 explosionTitles.forEach((title) => {
   title.classList.add('scroll-explode');
-  const text = title.textContent;
-  title.textContent = '';
+  const html = title.innerHTML;
+  const hasEm = html.includes('<em>');
+  const tempDiv = document.createElement('div');
+  tempDiv.innerHTML = html;
+  const rawText = tempDiv.textContent;
+
+  title.innerHTML = '';
 
   const titleChars = [];
-  text.split('').forEach((char) => {
+  let charIndex = 0;
+  rawText.split('').forEach((char) => {
     const span = document.createElement('span');
     span.className = char === ' ' ? 'char space' : 'char';
     span.textContent = char;
-    title.appendChild(span);
-    titleChars.push({
-      el: span,
-      x: (Math.random() - 0.5) * 300,
-      y: (Math.random() - 0.5) * 200 - 100,
-      r: (Math.random() - 0.5) * 720,
-      blur: 8 + Math.random() * 8,
-    });
+
+    if (hasEm) {
+      const emStart = rawText.indexOf('alive');
+      const emEnd = emStart + 5;
+      if (charIndex >= emStart && charIndex < emEnd) {
+        if (charIndex === emStart) {
+          const em = document.createElement('em');
+          em.appendChild(span);
+          title.appendChild(em);
+          titleChars.push({ el: span, isEm: true });
+        } else {
+          title.querySelector('em').appendChild(span);
+          titleChars.push({ el: span, isEm: true });
+        }
+      } else {
+        title.appendChild(span);
+        titleChars.push({ el: span, isEm: false });
+      }
+    } else {
+      title.appendChild(span);
+      titleChars.push({ el: span, isEm: false });
+    }
+
+    charIndex++;
+  });
+
+  titleChars.forEach((c) => {
+    c.x = (Math.random() - 0.5) * 300;
+    c.y = (Math.random() - 0.5) * 200 - 100;
+    c.r = (Math.random() - 0.5) * 720;
+    c.blur = 8 + Math.random() * 8;
   });
 
   const debrisContainer = document.createElement('div');
@@ -405,8 +434,8 @@ if (charWrap) {
   charWrap.style.display = 'none';
 }
 
-function splitText(el, baseDelay) {
-  const text = el.textContent;
+function splitText(el, baseDelay, useDataText) {
+  const text = useDataText ? el.getAttribute('data-text') : el.textContent;
   el.textContent = '';
   el.style.opacity = '1';
   text.split('').forEach((char, i) => {
@@ -418,7 +447,7 @@ function splitText(el, baseDelay) {
   });
 }
 
-splitText(heroName, 0.3);
+splitText(heroName, 0.3, true);
 
 document.querySelectorAll('.char-split').forEach((el) => {
   const delay = parseFloat(el.dataset.delay) || 0;
