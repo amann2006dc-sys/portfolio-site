@@ -439,20 +439,7 @@ section {
   margin-bottom: 4rem;
 }
 
-.reveal {
-  opacity: 0;
-  transform: translateY(40px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
-}
 
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.work-card.reveal:nth-child(1) { transition-delay: 0s; }
-.work-card.reveal:nth-child(2) { transition-delay: 0.15s; }
-.work-card.reveal:nth-child(3) { transition-delay: 0.3s; }
 
 .about-grid {
   display: grid;
@@ -1186,37 +1173,7 @@ footer {
   animation: gradient-shift 4s ease-in-out infinite;
 }
 
-[data-scroll-slide="left"].reveal {
-  transform: translateX(-80px);
-}
-[data-scroll-slide="right"].reveal {
-  transform: translateX(80px);
-}
-[data-scroll-slide="up"].reveal {
-  transform: translateY(60px);
-}
 
-[data-scroll-slide="left"].reveal.visible,
-[data-scroll-slide="right"].reveal.visible,
-[data-scroll-slide="up"].reveal.visible {
-  transform: translate(0, 0);
-}
-
-[data-scroll-scale].reveal {
-  transform: scale(0.85);
-  opacity: 0;
-}
-[data-scroll-scale].reveal.visible {
-  transform: scale(1);
-  opacity: 1;
-}
-
-[data-scroll-rotate].reveal {
-  transform: translateY(40px) rotate(-2deg);
-}
-[data-scroll-rotate].reveal.visible {
-  transform: translateY(0) rotate(0deg);
-}
 
 @media (max-width: 768px) {
   nav { padding: 1rem 1.5rem; }

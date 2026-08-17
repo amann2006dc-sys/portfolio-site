@@ -36,19 +36,6 @@ workCards.forEach((card) => {
   card.addEventListener('mouseleave', () => cursor.classList.remove('work-hover'));
 });
 
-const reveals = document.querySelectorAll('.reveal');
-const observer = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-      }
-    });
-  },
-  { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
-);
-reveals.forEach((el) => observer.observe(el));
-
 document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
   anchor.addEventListener('click', (e) => {
     e.preventDefault();
@@ -145,9 +132,7 @@ function updateScroll() {
       texts.forEach((text, i) => {
         const speed = parseFloat(text.dataset.speed) || 1;
         const offset = (progress - 0.5) * 60 * speed;
-        text.style.transform = text.classList.contains('visible')
-          ? `translateY(${offset}px)`
-          : `translateY(40px)`;
+        text.style.transform = `translateY(${offset}px)`;
       });
     }
   }
@@ -327,19 +312,6 @@ const statsObserver = new IntersectionObserver(
   { threshold: 0.5 }
 );
 statNumbers.forEach((el) => statsObserver.observe(el));
-
-const manifestoTexts = document.querySelectorAll('.manifesto-text');
-const manifestoObserver = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-      }
-    });
-  },
-  { threshold: 0.3 }
-);
-manifestoTexts.forEach((el) => manifestoObserver.observe(el));
 
 const ixdCards = document.querySelectorAll('.ixd-card');
 ixdCards.forEach((card) => {
