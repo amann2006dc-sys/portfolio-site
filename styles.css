@@ -265,20 +265,11 @@ nav a:hover { color: var(--fg); }
   color: var(--cyan);
   text-transform: uppercase;
   letter-spacing: 0.3em;
-}
-
-.hero-sub .char,
-.hero-tagline .char {
-  display: inline-block;
   opacity: 0;
-  transform: translateY(15px) rotateZ(-3deg);
-  animation: char-split-fade 0.5s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+  animation: fadeUp 0.8s 0.2s forwards;
 }
 
-@keyframes char-split-fade {
-  0% { opacity: 0; transform: translateY(15px) rotateZ(-3deg); filter: blur(2px); }
-  100% { opacity: 1; transform: translateY(0) rotateZ(0deg); filter: blur(0); }
-}
+
 
 .hero-name {
   font-size: clamp(3rem, 10vw, 8rem);
@@ -286,46 +277,15 @@ nav a:hover { color: var(--fg); }
   letter-spacing: -0.04em;
   line-height: 1;
   margin: 0.5rem 0;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.4s forwards, gradient-shift 6s ease-in-out infinite;
   position: relative;
   display: inline-block;
-  perspective: 600px;
-}
-
-.hero-name .char {
-  display: inline-block;
-  opacity: 0;
-  transform: translateY(80px) rotateX(-60deg) scale(0.6) rotateZ(-8deg);
-  animation: char-reveal 0.9s cubic-bezier(0.23, 1, 0.32, 1) forwards;
-  transform-origin: bottom center;
   background: linear-gradient(135deg, var(--fg) 0%, var(--cyan) 50%, var(--purple) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   background-size: 200% 200%;
-}
-
-.hero-name .char.space {
-  width: 0.3em;
-}
-
-@keyframes char-reveal {
-  0% {
-    opacity: 0;
-    transform: translateY(80px) rotateX(-60deg) scale(0.6) rotateZ(-8deg);
-    filter: blur(6px);
-  }
-  50% {
-    opacity: 1;
-    filter: blur(0);
-  }
-  75% {
-    transform: translateY(-8px) rotateX(5deg) scale(1.05) rotateZ(1deg);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) rotateX(0deg) scale(1) rotateZ(0deg);
-    filter: blur(0);
-  }
 }
 
 @keyframes gradient-shift {
@@ -337,6 +297,8 @@ nav a:hover { color: var(--fg); }
   font-size: 1.25rem;
   color: var(--muted);
   margin-bottom: 2rem;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.6s forwards;
 }
 
 .cta-btn {
@@ -448,98 +410,7 @@ section {
   transition: opacity 0.6s ease;
 }
 
-section.fade-section {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
-}
 
-section.fade-section.in-view {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.section-inner > * {
-  transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.6s ease;
-}
-
-.section-inner.stagger-children > *:nth-child(1) { transition-delay: 0s; }
-.section-inner.stagger-children > *:nth-child(2) { transition-delay: 0.1s; }
-.section-inner.stagger-children > *:nth-child(3) { transition-delay: 0.2s; }
-.section-inner.stagger-children > *:nth-child(4) { transition-delay: 0.3s; }
-.section-inner.stagger-children > *:nth-child(5) { transition-delay: 0.4s; }
-
-@keyframes cinematic-blur-in {
-  0% { filter: blur(8px); opacity: 0; transform: translateY(40px) scale(0.97); }
-  100% { filter: blur(0); opacity: 1; transform: translateY(0) scale(1); }
-}
-
-.cinematic-reveal {
-  animation: cinematic-blur-in 1s cubic-bezier(0.23, 1, 0.32, 1) forwards;
-}
-
-@keyframes text-shimmer {
-  0% { background-position: -200% center; }
-  100% { background-position: 200% center; }
-}
-
-.gradient-title.shimmer {
-  background-size: 200% auto;
-  animation: text-shimmer 3s linear infinite;
-}
-
-@keyframes slide-magnetic {
-  0% { transform: translateX(-100%); opacity: 0; }
-  60% { transform: translateX(5%); opacity: 1; }
-  100% { transform: translateX(0); opacity: 1; }
-}
-
-@keyframes counter-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(-360deg); }
-}
-
-.scroll-explode {
-  position: relative;
-  opacity: 1 !important;
-  transform: none !important;
-}
-
-.scroll-explode .char {
-  display: inline-block;
-  transition: none;
-  will-change: transform, opacity, filter;
-  opacity: 1;
-}
-
-.scroll-explode .debris {
-  position: absolute;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  pointer-events: none;
-  will-change: transform, opacity;
-  opacity: 0;
-}
-
-.scroll-explode .debris--square {
-  border-radius: 2px;
-}
-
-.scroll-explode .debris--triangle {
-  width: 0;
-  height: 0;
-  background: none !important;
-  border-left: 4px solid transparent;
-  border-right: 4px solid transparent;
-  border-bottom: 7px solid currentColor;
-}
-
-.scroll-explode .debris--line {
-  width: 12px;
-  height: 2px;
-  border-radius: 1px;
-}
 
 .section-inner {
   max-width: 1000px;

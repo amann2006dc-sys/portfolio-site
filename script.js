@@ -49,19 +49,6 @@ const observer = new IntersectionObserver(
 );
 reveals.forEach((el) => observer.observe(el));
 
-const bigTextLines = document.querySelectorAll('.big-text-line');
-const bigTextObserver = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-      }
-    });
-  },
-  { threshold: 0.3 }
-);
-bigTextLines.forEach((el) => bigTextObserver.observe(el));
-
 document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
   anchor.addEventListener('click', (e) => {
     e.preventDefault();
@@ -164,162 +151,7 @@ function updateScroll() {
       });
     }
   }
-
-  document.querySelectorAll('section').forEach((section) => {
-    const rect = section.getBoundingClientRect();
-    const inView = rect.top < vh * 0.85 && rect.bottom > 0;
-    if (inView) {
-      section.classList.add('in-view');
-    }
-  });
-
-  document.querySelectorAll('.work-card').forEach((card) => {
-    const rect = card.getBoundingClientRect();
-    if (rect.top < vh && rect.bottom > 0) {
-      const progress = (vh - rect.top) / (vh + rect.height);
-      const rotate = (progress - 0.5) * 2;
-      const existingTransform = card.style.transform || '';
-      if (!existingTransform.includes('perspective')) {
-        card.style.transform += ` rotateX(${rotate}deg)`;
-      }
-    }
-  });
 }
-
-const explosionTitles = document.querySelectorAll('.section-title, .big-text-line');
-const debrisColors = ['#22d3ee', '#a855f7', '#ec4899', '#fb923c', '#38ef7d', '#e8e6e3'];
-const debrisShapes = ['debris--square', 'debris--triangle', 'debris--line'];
-const charData = [];
-
-explosionTitles.forEach((title) => {
-  title.classList.add('scroll-explode');
-  const html = title.innerHTML;
-  const hasEm = html.includes('<em>');
-  const tempDiv = document.createElement('div');
-  tempDiv.innerHTML = html;
-  const rawText = tempDiv.textContent;
-
-  title.innerHTML = '';
-
-  const titleChars = [];
-  let charIndex = 0;
-  rawText.split('').forEach((char) => {
-    const span = document.createElement('span');
-    span.className = char === ' ' ? 'char space' : 'char';
-    span.textContent = char;
-
-    if (hasEm) {
-      const emStart = rawText.indexOf('alive');
-      const emEnd = emStart + 5;
-      if (charIndex >= emStart && charIndex < emEnd) {
-        if (charIndex === emStart) {
-          const em = document.createElement('em');
-          em.appendChild(span);
-          title.appendChild(em);
-          titleChars.push({ el: span, isEm: true });
-        } else {
-          title.querySelector('em').appendChild(span);
-          titleChars.push({ el: span, isEm: true });
-        }
-      } else {
-        title.appendChild(span);
-        titleChars.push({ el: span, isEm: false });
-      }
-    } else {
-      title.appendChild(span);
-      titleChars.push({ el: span, isEm: false });
-    }
-
-    charIndex++;
-  });
-
-  titleChars.forEach((c) => {
-    c.x = (Math.random() - 0.5) * 300;
-    c.y = (Math.random() - 0.5) * 200 - 100;
-    c.r = (Math.random() - 0.5) * 720;
-    c.blur = 8 + Math.random() * 8;
-  });
-
-  const debrisContainer = document.createElement('div');
-  debrisContainer.style.cssText = 'position:absolute;inset:0;pointer-events:none;overflow:visible;';
-  title.style.position = 'relative';
-  title.appendChild(debrisContainer);
-
-  const debrisItems = [];
-  for (let i = 0; i < 12; i++) {
-    const d = document.createElement('div');
-    const shape = debrisShapes[Math.floor(Math.random() * debrisShapes.length)];
-    d.className = 'debris ' + shape;
-    const color = debrisColors[Math.floor(Math.random() * debrisColors.length)];
-    d.style.color = color;
-    if (!shape.includes('triangle')) {
-      d.style.background = color;
-    }
-    d.style.width = (4 + Math.random() * 8) + 'px';
-    d.style.height = (4 + Math.random() * 8) + 'px';
-    debrisContainer.appendChild(d);
-    debrisItems.push({
-      el: d,
-      x: (Math.random() - 0.5) * 400,
-      y: (Math.random() - 0.5) * 300 - 150,
-      r: (Math.random() - 0.5) * 1080,
-      scale: 0.5 + Math.random() * 1.5,
-    });
-  }
-
-  charData.push({ title, chars: titleChars, debris: debrisItems });
-});
-
-function updateExplosions() {
-  const vh2 = window.innerHeight;
-
-  charData.forEach(({ title, chars, debris }) => {
-    const rect = title.getBoundingClientRect();
-    const titleTop = rect.top;
-    const start = vh2 * 0.15;
-    const end = -rect.height * 0.5;
-    let progress = 0;
-
-    if (titleTop < start && titleTop > end) {
-      progress = 1 - (titleTop - end) / (start - end);
-      progress = Math.max(0, Math.min(1, progress));
-    } else if (titleTop <= end) {
-      progress = 1;
-    }
-
-    const ease = progress < 0.5
-      ? 4 * progress * progress * progress
-      : 1 - Math.pow(-2 * progress + 2, 3) / 2;
-
-    chars.forEach((c) => {
-      const tx = c.x * ease;
-      const ty = c.y * ease;
-      const rotate = c.r * ease;
-      const blur = c.blur * ease;
-      const opacity = 1 - ease;
-      const scale = 1 - ease * 0.4;
-      c.el.style.transform = `translate(${tx}px, ${ty}px) rotate(${rotate}deg) scale(${scale})`;
-      c.el.style.opacity = opacity;
-      c.el.style.filter = `blur(${blur}px)`;
-    });
-
-    debris.forEach((d) => {
-      if (ease > 0.05) {
-        const tx = d.x * ease;
-        const ty = d.y * ease;
-        const rotate = d.r * ease;
-        const opacity = ease < 0.1 ? ease * 10 : ease > 0.8 ? (1 - ease) * 5 : 1;
-        d.el.style.transform = `translate(${tx}px, ${ty}px) rotate(${rotate}deg) scale(${d.scale * ease})`;
-        d.el.style.opacity = opacity;
-      } else {
-        d.el.style.opacity = 0;
-      }
-    });
-  });
-}
-
-window.addEventListener('scroll', updateExplosions, { passive: true });
-updateExplosions();
 
 window.addEventListener('scroll', onScroll, { passive: true });
 updateScroll();
@@ -425,34 +257,6 @@ function animateParticles() {
   requestAnimationFrame(animateParticles);
 }
 animateParticles();
-
-const heroName = document.querySelector('.hero-name');
-const originalText = heroName.getAttribute('data-text');
-const charWrap = heroName.querySelector('.char-wrap');
-
-if (charWrap) {
-  charWrap.style.display = 'none';
-}
-
-function splitText(el, baseDelay, useDataText) {
-  const text = useDataText ? el.getAttribute('data-text') : el.textContent;
-  el.textContent = '';
-  el.style.opacity = '1';
-  text.split('').forEach((char, i) => {
-    const span = document.createElement('span');
-    span.className = char === ' ' ? 'char space' : 'char';
-    span.textContent = char;
-    span.style.animationDelay = (baseDelay + i * 0.04) + 's';
-    el.appendChild(span);
-  });
-}
-
-splitText(heroName, 0.3, true);
-
-document.querySelectorAll('.char-split').forEach((el) => {
-  const delay = parseFloat(el.dataset.delay) || 0;
-  splitText(el, delay);
-});
 
 const tiltCards = document.querySelectorAll('[data-tilt]');
 tiltCards.forEach((card) => {
@@ -563,8 +367,7 @@ lightboxLinks.forEach((link) => {
     const type = link.dataset.lightbox;
 
     lightboxContent.innerHTML = '';
-  lightboxContent.classList.remove('lightbox-scroll-mode');
-  lightboxContent.classList.remove('lightbox-glow-mode');
+    lightboxContent.classList.remove('lightbox-scroll-mode');
     lightboxContent.classList.remove('lightbox-glow-mode');
 
     if (type === 'scroll-image') {
@@ -602,8 +405,8 @@ lightboxLinks.forEach((link) => {
       img.src = href;
       img.alt = link.querySelector('h3')?.textContent || 'Project';
 
-      const particles = document.createElement('div');
-      particles.className = 'lightbox-glow-particles';
+      const glowParticles = document.createElement('div');
+      glowParticles.className = 'lightbox-glow-particles';
       const colors = ['#22d3ee', '#a855f7', '#ec4899', '#fb923c'];
       for (let i = 0; i < 20; i++) {
         const p = document.createElement('div');
@@ -615,12 +418,12 @@ lightboxLinks.forEach((link) => {
         p.style.width = (2 + Math.random() * 3) + 'px';
         p.style.height = p.style.width;
         p.style.boxShadow = `0 0 6px ${p.style.background}`;
-        particles.appendChild(p);
+        glowParticles.appendChild(p);
       }
 
       wrap.appendChild(ring);
       wrap.appendChild(img);
-      wrap.appendChild(particles);
+      wrap.appendChild(glowParticles);
       lightboxContent.appendChild(wrap);
 
       const lens = document.createElement('div');
@@ -684,14 +487,7 @@ lightboxLinks.forEach((link) => {
       }, { passive: true });
 
       img.addEventListener('touchend', releaseZoom);
-    } else if (type === 'pdf') {
-      const iframe = document.createElement('iframe');
-      iframe.src = href;
-      lightboxContent.appendChild(iframe);
     }
-
-    lightbox.classList.add('active');
-    document.body.style.overflow = 'hidden';
   });
 });
 
@@ -699,14 +495,15 @@ function updateScrollProgress() {
   if (!lightboxProgressBar || !lightboxContent.classList.contains('lightbox-scroll-mode')) return;
   const scrollTop = lightboxContent.scrollTop;
   const scrollHeight = lightboxContent.scrollHeight - lightboxContent.clientHeight;
-  const progress = scrollHeight > 0 ? scrollTop / scrollHeight : 0;
-  lightboxProgressBar.style.transform = `scaleX(${progress})`;
+  const prog = scrollHeight > 0 ? scrollTop / scrollHeight : 0;
+  lightboxProgressBar.style.transform = `scaleX(${prog})`;
 }
 
 function closeLightbox() {
   lightbox.classList.remove('active');
   document.body.style.overflow = '';
   lightboxContent.classList.remove('lightbox-scroll-mode');
+  lightboxContent.classList.remove('lightbox-glow-mode');
   lightboxContent.scrollTop = 0;
   if (lightboxProgressBar) {
     lightboxProgressBar.classList.remove('visible');
