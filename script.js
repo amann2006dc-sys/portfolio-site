@@ -128,14 +128,11 @@ function updateScroll() {
     const rect = manifesto.getBoundingClientRect();
     if (rect.top < vh && rect.bottom > 0) {
       const progress = (vh - rect.top) / (vh + rect.height);
-      const texts = manifesto.querySelectorAll('.manifesto-text');
-      texts.forEach((text, i) => {
-        const speed = parseFloat(text.dataset.speed) || 1;
-        const offset = (progress - 0.5) * 60 * speed;
-        text.style.transform = `translateY(${offset}px)`;
-      });
+      manifesto.style.opacity = Math.min(1, progress * 2);
     }
   }
+
+  updateExplosions();
 }
 
 window.addEventListener('scroll', onScroll, { passive: true });
@@ -242,6 +239,116 @@ function animateParticles() {
   requestAnimationFrame(animateParticles);
 }
 animateParticles();
+
+const explodeEls = document.querySelectorAll('[data-explode]');
+const explodeData = [];
+
+explodeEls.forEach((el) => {
+  const html = el.innerHTML;
+  const tempDiv = document.createElement('div');
+  tempDiv.innerHTML = html;
+  const rawText = tempDiv.textContent;
+
+  el.innerHTML = '';
+
+  const isManifesto = el.classList.contains('manifesto-text');
+  const isHero = el.classList.contains('hero-name');
+
+  let charIndex = 0;
+  const chars = [];
+  const hasEm = html.includes('<em>');
+
+  if (hasEm) {
+    const emText = tempDiv.querySelector('em')?.textContent || '';
+    const emStart = rawText.indexOf(emText);
+    const emEnd = emStart + emText.length;
+
+    rawText.split('').forEach((char) => {
+      const span = document.createElement('span');
+      span.className = 'ex-char';
+      span.textContent = char;
+
+      if (charIndex >= emStart && charIndex < emEnd) {
+        if (charIndex === emStart) {
+          const em = document.createElement('em');
+          em.appendChild(span);
+          el.appendChild(em);
+        } else {
+          el.querySelector('em').appendChild(span);
+        }
+      } else {
+        el.appendChild(span);
+      }
+
+      chars.push({
+        el: span,
+        x: (Math.random() - 0.5) * 250,
+        y: (Math.random() - 0.5) * 150 - 80,
+        r: (Math.random() - 0.5) * 600,
+        blur: 6 + Math.random() * 8,
+      });
+
+      charIndex++;
+    });
+  } else {
+    rawText.split('').forEach((char) => {
+      const span = document.createElement('span');
+      span.className = 'ex-char';
+      span.textContent = char === ' ' ? '\u00A0' : char;
+      el.appendChild(span);
+
+      chars.push({
+        el: span,
+        x: (Math.random() - 0.5) * 250,
+        y: (Math.random() - 0.5) * 150 - 80,
+        r: (Math.random() - 0.5) * 600,
+        blur: 6 + Math.random() * 8,
+      });
+
+      charIndex++;
+    });
+  }
+
+  explodeData.push({ el, chars, isManifesto, isHero });
+});
+
+function updateExplosions() {
+  const vh = window.innerHeight;
+
+  explodeData.forEach(({ el, chars, isManifesto, isHero }) => {
+    const rect = el.getBoundingClientRect();
+    let progress = 0;
+
+    if (isHero) {
+      progress = Math.min(scrollY / (vh * 0.6), 1);
+    } else if (isManifesto) {
+      const start = vh * 0.2;
+      const end = -rect.height * 0.3;
+      if (rect.top < start && rect.top > end) {
+        progress = 1 - (rect.top - end) / (start - end);
+        progress = Math.max(0, Math.min(1, progress));
+      } else if (rect.top <= end) {
+        progress = 1;
+      }
+    }
+
+    const ease = progress < 0.5
+      ? 4 * progress * progress * progress
+      : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+
+    chars.forEach((c) => {
+      const tx = c.x * ease;
+      const ty = c.y * ease;
+      const rotate = c.r * ease;
+      const blur = c.blur * ease;
+      const opacity = 1 - ease;
+      const scale = 1 - ease * 0.3;
+      c.el.style.transform = `translate(${tx}px, ${ty}px) rotate(${rotate}deg) scale(${scale})`;
+      c.el.style.opacity = opacity;
+      c.el.style.filter = `blur(${blur}px)`;
+    });
+  });
+}
 
 const tiltCards = document.querySelectorAll('[data-tilt]');
 tiltCards.forEach((card) => {
